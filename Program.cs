@@ -1,201 +1,135 @@
 ﻿using System;
 
-using System.Collections.Generic;
-
-using System.Linq;
-
-using System.Text;
-
-using System.Threading.Tasks;
-
-namespace Heranca
-
+public class App
 {
-
-    public class Program
-
+    static void Main()
     {
+        PixPessoaFisica pfPf = new PixPessoaFisica("123.456.789-00", "987.654.321-00", 150.0);
+        Console.WriteLine(pfPf.Executar());
+        pfPf.ImprimirComprovante();
 
-        static void Main(string[] args)
-
-        {
-            List<Conta> contas = new List<Conta>();
-            ContaCorrente contaCorrente1 = new ContaCorrente("Leandro Widmar", "1000");
-            Poupanca poupanca1 = new Poupanca("LeandroPoupança", "5,000,00");
-            ContaConjunta conjunta1 = new ContaConjunta("Leandro","500","Julia");
-
-            contas.Add(contaCorrente1);
-            contas.Add(poupanca1);
-            contas.Add(conjunta1);
-            foreach(var conta in contas) 
-                {
-                    conta.Resumo();
-                }
-
-
-        }
-
+        PixPessoaJuridica pjPj = new PixPessoaJuridica("12.345.678/0001-00", "98.765.432/0001-00", 500.0);
+        Console.WriteLine(pjPj.Executar());
+        pjPj.ImprimirComprovante();
     }
-
-    public class Conta
-
-    {
-
-        protected string titular;
-
-        protected string numeroConta;
-
-        protected decimal saldo;
-
-        public Conta(string titular, string numeroConta)
-
-        {
-
-            this.titular = titular;
-
-            this.numeroConta = numeroConta;
-
-            this.saldo = 0;
-
-        }
-
-        public virtual void Depositar(decimal valor)
-
-        {
-
-            if (valor >= 0)
-
-            {
-
-                saldo += valor;
-
-            }
-
-            else
-
-            {
-
-                Console.WriteLine("Valor dado é menor do que zero! Operação não foi feita.");
-
-                return;
-
-            }
-
-        }
-
-        public virtual void Sacar(decimal valor)
-
-        {
-
-            if (valor > 0 && saldo > valor)
-
-            {
-
-                saldo -= valor;
-
-            }
-
-            else
-
-            {
-
-                Console.WriteLine("Valor dado é menor do que zero! Operação não foi feita.");
-
-                return;
-
-            }
-
-        }
-
-        public virtual void Resumo()
-
-        {
-
-            Console.WriteLine($"Número da conta: {numeroConta}\nNome titular: {titular}\nSaldo: {saldo:F2}");
-
-        }
-
-    }
-
-    public class ContaCorrente : Conta
-
-    {
-
-        private const decimal tarifaSaque = 1;
-
-        public ContaCorrente(string titular, string numeroConta) : base(titular, numeroConta) { }
-
-        public override void Sacar(decimal valor)
-
-        {
-
-            if (valor > 0 && saldo >= valor + tarifaSaque)
-
-            {
-
-                saldo -= valor + tarifaSaque;
-
-            }
-
-            else
-
-            {
-
-                Console.WriteLine("Valor dado é menor do que zero! Operação não foi feita.");
-
-                return;
-
-            }
-
-        }
-
-    }
-
-    public class Poupanca : Conta
-
-    {
-
-        private const decimal taxaRendimentoAnual = 0.08m;
-
-        public Poupanca(string titular, string numeroConta) : base(titular, numeroConta) { }
-
-
-        private void RenderJuro(int dias)
-
-        {
-
-            decimal rendimento = saldo * taxaRendimentoAnual * dias / 365;
-
-            base.Depositar(rendimento);
-
-        }
-
-    }
-
-    public class ContaConjunta : ContaCorrente
-
-    {
-
-        private string segundoTitular;
-
-        public ContaConjunta(string titular, string numeroConta, string segundoTitular) : base(titular, numeroConta)
-
-        {
-
-            this.segundoTitular = segundoTitular;
-
-
-        }
-
-        public override void Resumo()
-
-        {
-
-            Console.WriteLine($"Número da conta: {numeroConta}\nNome primeiro titular: {titular}\n Nome segundo titular: {segundoTitular}\nSaldo: {saldo:F2}");
-
-        }
-
-    }
-
 }
 
+public abstract class Pix
+{
+    protected string _idOriginador;
+    protected string _idDestinatario;
+    protected double _valor;
+
+    public abstract string Executar();
+
+    public void ImprimirComprovante()
+    {
+        Console.WriteLine($"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.");
+    }
+}
+
+public class PixPessoaFisica : Pix
+{
+    public PixPessoaFisica(string cpfOriginador, string cpfDestinatario, double valor)
+    {
+        _idOriginador = cpfOriginador;
+        _idDestinatario = cpfDestinatario;
+        _valor = valor;
+    }
+
+    public override string Executar()
+    {
+        if (!ValidadorCPF.IsValid(_idOriginador))
+            return "Originador inválido!";
+        if (!ValidadorCPF.IsValid(_idDestinatario))
+            return "Destinatário inválido!";
+        if (_valor <= 0)
+            return "Valor do pix deve ser positivo!";
+
+        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
+    }
+}
+
+public class PixPessoaJuridica : Pix
+{
+    public PixPessoaJuridica(string cnpjOriginador, string cnpjDestinatario, double valor)
+    {
+        _idOriginador = cnpjOriginador;
+        _idDestinatario = cnpjDestinatario;
+        _valor = valor;
+    }
+
+    public override string Executar()
+    {
+        if (!ValidadorCNPJ.IsValid(_idOriginador))
+            return "Originador inválido!";
+        if (!ValidadorCNPJ.IsValid(_idDestinatario))
+            return "Destinatário inválido!";
+        if (_valor <= 0)
+            return "Valor do pix deve ser positivo!";
+
+        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
+    }
+}
+
+public class PixCpfparaJuridica : Pix
+{
+    public PixCpfparaJuridica(string cpfOriginador, string cnpjDestinatario, double valor)
+    {
+        _idOriginador = cpfOriginador;
+        _idDestinatario = cnpjDestinatario;
+        _valor = valor;
+    }
+
+    public override string Executar()
+    {
+        if (!ValidadorCPF.IsValid(_idOriginador))
+            return "Originador inválido!";
+        if (!ValidadorCNPJ.IsValid(_idDestinatario))
+            return "Destinatário inválido!";
+        if (_valor <= 0)
+            return "Valor do pix deve ser positivo!";
+
+        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
+    }
+}
+
+public class PixJuridicaParaCpf : Pix
+{
+    public PixJuridicaParaCpf(string cpnjOriginador, string cpfDestinatario, double valor)
+    {
+        _idOriginador = cpnjOriginador;
+        _idDestinatario = cpfDestinatario;
+        _valor = valor;
+    }
+
+    public override string Executar()
+    {
+        if (!ValidadorCNPJ.IsValid(_idOriginador))
+            return "Originador inválido!";
+        if (!ValidadorCPF.IsValid(_idDestinatario))
+            return "Destinatário inválido!";
+        if (_valor <= 0)
+            return "Valor do pix deve ser positivo!";
+
+        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
+    }
+}
+
+public class ValidadorCPF
+{
+    public static bool IsValid(string cpf)
+    {
+        // Não é necessário implementar essa validação
+        return true;
+    }
+}
+
+public class ValidadorCNPJ
+{
+    public static bool IsValid(string cnpj)
+    {
+        // Não é necessário implementar essa validação
+        return true;
+    }
+}
