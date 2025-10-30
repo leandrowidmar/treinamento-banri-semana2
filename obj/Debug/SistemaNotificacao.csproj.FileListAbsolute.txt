@@ -1,0 +1,7 @@
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\bin\Debug\SistemaNotificacao.exe.config
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\bin\Debug\SistemaNotificacao.exe
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\bin\Debug\SistemaNotificacao.pdb
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\obj\Debug\SistemaNotificacao.csprojAssemblyReference.cache
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\obj\Debug\SistemaNotificacao.csproj.CoreCompileInputs.cache
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\obj\Debug\SistemaNotificacao.exe
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaNotificacao\obj\Debug\SistemaNotificacao.pdb

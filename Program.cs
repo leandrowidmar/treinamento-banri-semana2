@@ -1,135 +1,72 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class App
+namespace SistemaNotificacao
 {
-    static void Main()
+    class Program
     {
-        PixPessoaFisica pfPf = new PixPessoaFisica("123.456.789-00", "987.654.321-00", 150.0);
-        Console.WriteLine(pfPf.Executar());
-        pfPf.ImprimirComprovante();
 
-        PixPessoaJuridica pjPj = new PixPessoaJuridica("12.345.678/0001-00", "98.765.432/0001-00", 500.0);
-        Console.WriteLine(pjPj.Executar());
-        pjPj.ImprimirComprovante();
-    }
-}
+        public class app 
+        { 
+                             
+            static void Main(string[] args)  
+            {
+               Email email1 = new Email();               
+               Console.WriteLine(email1.EnviarMensagem("oiiiiiiiiiii"));
 
-public abstract class Pix
-{
-    protected string _idOriginador;
-    protected string _idDestinatario;
-    protected double _valor;
+                SMS sms1 = new SMS();
+                Console.WriteLine(sms1.EnviarMensagem("oiiiiiiiiiiii"));
 
-    public abstract string Executar();
+                Push push1 = new Push();
+                Console.WriteLine(push1.EnviarMensagem("oiiiiiiiiiiii"));
 
-    public void ImprimirComprovante()
-    {
-        Console.WriteLine($"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.");
-    }
-}
 
-public class PixPessoaFisica : Pix
-{
-    public PixPessoaFisica(string cpfOriginador, string cpfDestinatario, double valor)
-    {
-        _idOriginador = cpfOriginador;
-        _idDestinatario = cpfDestinatario;
-        _valor = valor;
-    }
+            }
 
-    public override string Executar()
-    {
-        if (!ValidadorCPF.IsValid(_idOriginador))
-            return "Originador inválido!";
-        if (!ValidadorCPF.IsValid(_idDestinatario))
-            return "Destinatário inválido!";
-        if (_valor <= 0)
-            return "Valor do pix deve ser positivo!";
+            public interface Mensagem
+            {
+             string EnviarMensagem(string mensagem);
+            }
 
-        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
-    }
-}
 
-public class PixPessoaJuridica : Pix
-{
-    public PixPessoaJuridica(string cnpjOriginador, string cnpjDestinatario, double valor)
-    {
-        _idOriginador = cnpjOriginador;
-        _idDestinatario = cnpjDestinatario;
-        _valor = valor;
-    }
+            public class Email : Mensagem
+            {
+                public string EnviarMensagem(string mensagem)
+                {
+                  
+                    return $"Enviando E-mail: {mensagem}";
+                }
+                
+            }
 
-    public override string Executar()
-    {
-        if (!ValidadorCNPJ.IsValid(_idOriginador))
-            return "Originador inválido!";
-        if (!ValidadorCNPJ.IsValid(_idDestinatario))
-            return "Destinatário inválido!";
-        if (_valor <= 0)
-            return "Valor do pix deve ser positivo!";
+            public class SMS : Mensagem
+            {
 
-        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
-    }
-}
+                public string EnviarMensagem(string mensagem)
+                {
+                
+                return $"Enviado SMS: {mensagem}";    
+                }
 
-public class PixCpfparaJuridica : Pix
-{
-    public PixCpfparaJuridica(string cpfOriginador, string cnpjDestinatario, double valor)
-    {
-        _idOriginador = cpfOriginador;
-        _idDestinatario = cnpjDestinatario;
-        _valor = valor;
-    }
+            }
 
-    public override string Executar()
-    {
-        if (!ValidadorCPF.IsValid(_idOriginador))
-            return "Originador inválido!";
-        if (!ValidadorCNPJ.IsValid(_idDestinatario))
-            return "Destinatário inválido!";
-        if (_valor <= 0)
-            return "Valor do pix deve ser positivo!";
+            public class Push : Mensagem
+            { 
+                public string EnviarMensagem(string mensagem)    
+                {
+                 return $"Enviando push: {mensagem}";
+                        
+                } 
+            }
 
-        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
-    }
-}
 
-public class PixJuridicaParaCpf : Pix
-{
-    public PixJuridicaParaCpf(string cpnjOriginador, string cpfDestinatario, double valor)
-    {
-        _idOriginador = cpnjOriginador;
-        _idDestinatario = cpfDestinatario;
-        _valor = valor;
-    }
 
-    public override string Executar()
-    {
-        if (!ValidadorCNPJ.IsValid(_idOriginador))
-            return "Originador inválido!";
-        if (!ValidadorCPF.IsValid(_idDestinatario))
-            return "Destinatário inválido!";
-        if (_valor <= 0)
-            return "Valor do pix deve ser positivo!";
 
-        return $"Pix de R$ {_valor:F2} enviado de {_idOriginador} para {_idDestinatario}.";
-    }
-}
 
-public class ValidadorCPF
-{
-    public static bool IsValid(string cpf)
-    {
-        // Não é necessário implementar essa validação
-        return true;
-    }
-}
-
-public class ValidadorCNPJ
-{
-    public static bool IsValid(string cnpj)
-    {
-        // Não é necessário implementar essa validação
-        return true;
+            } 
+        
     }
 }

@@ -1,0 +1,7 @@
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\obj\Debug\SistemaDeReserva.csprojAssemblyReference.cache
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\obj\Debug\SistemaDeReserva.csproj.CoreCompileInputs.cache
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\bin\Debug\SistemaDeReserva.exe.config
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\bin\Debug\SistemaDeReserva.exe
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\bin\Debug\SistemaDeReserva.pdb
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\obj\Debug\SistemaDeReserva.exe
+C:\Users\E38365\source\repos\ConsoleApp3\SistemaDeReserva\obj\Debug\SistemaDeReserva.pdb
